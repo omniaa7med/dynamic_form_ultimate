@@ -11,6 +11,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { DynamicGroupComponent } from '../dynamic-group/dynamic-group.component';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
+import { Field } from '../../interfaces/fieldType';
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
@@ -26,7 +27,7 @@ import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component'
 export class DynamicFormComponent {
   form!: FormGroup;
   testData: any;
-  groupedFields: Record<string, any[]> = {};
+  groupedFields: Record<string, Field[]> = {};
   flatFields: any[] = [];
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
