@@ -6,10 +6,10 @@
     <div *ngFor="let group of groupArray.controls; let i = index" class="mb-2">
 
       <!-- Render flat fields -->
-      <app-dynamic-field *ngFor="let field of innerFields" [field]="field" [form]="group">
+      <app-dynamic-field *ngFor="let field of fields" [field]="field" [form]="group">
       </app-dynamic-field>
 
-      <!-- Render nested groups -->
+      <!-- Render multi groups -->
       <ng-container *ngIf="nestedGroups[i]">
         <app-dynamic-group *ngFor="let nested of nestedGroups[i] | keyvalue" [groupName]="nested.key"
           [fields]="nested.value" [parentForm]="group">
@@ -21,5 +21,5 @@
     </div>
   </div>
 
-  <button class="btn btn-primary btn-sm" type="button" (click)="addGroup()">Add {{ groupName }}</button>
+  <button class="btn btn-primary btn-sm" type="button" (click)="createGroup()">Add {{ groupName }}</button>
 </div>

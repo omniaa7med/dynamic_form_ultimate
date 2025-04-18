@@ -5,7 +5,6 @@ import {
   FormArray,
   ReactiveFormsModule,
   FormControl,
-  FormBuilder,
 } from '@angular/forms';
 
 @Component({
@@ -20,18 +19,20 @@ export class DynamicFieldComponent {
   @Input() form!: FormGroup | any;
 
   get isMulti(): boolean {
-    return this.field.isMulti === true || this.field.isMulti === 'true';
+    return this.field.isMulti == true;
   }
 
   getFormArray(fieldName: string): FormArray {
     return this.form.get(fieldName) as FormArray;
   }
 
+  // add multi input
   addMulti() {
     const array = this.form.get(this.field.fieldName) as FormArray;
-    array.push(new FormControl(''));
+    array.push(new FormControl(null));
   }
 
+  // remove multi input by index
   removeMulti(index: number) {
     const array = this.form.get(this.field.fieldName) as FormArray;
     array.removeAt(index);

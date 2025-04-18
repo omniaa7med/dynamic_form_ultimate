@@ -6,6 +6,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DynamicGroupComponent } from '../dynamic-group/dynamic-group.component';
@@ -24,27 +25,27 @@ import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component'
 })
 export class DynamicFormComponent {
   form!: FormGroup;
-  schema: any;
+  testData: any;
   groupedFields: Record<string, any[]> = {};
   flatFields: any[] = [];
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<any>('assets/data/tabletest1.json').subscribe((data) => {
-      this.schema = data;
-      this.buildSchema(this.schema.fieldName);
+    this.http.get<any>('assets/data/tabletest2.json').subscribe((data) => {
+      this.testData = data;
+      console.log(this.testData);
+
+      this.buildDynamicForm(this.testData.fieldName);
       this.form = this.fb.group({
-        ID: [''],
-        // inputter: ['omnia'],
+        ID: [null],
         ...this.handleFlatFields(),
-        ...this.initGroups(),
+        ...this.handleGroupFields(),
       });
-      console.log(this.form);
     });
   }
 
-  buildSchema(fields: any[]) {
+  buildDynamicForm(fields: any[]) {
     fields.forEach((field) => {
       const group = field.Group;
       if (!group) {
@@ -58,22 +59,19 @@ export class DynamicFormComponent {
     });
   }
 
-  initGroups(): any {
+  handleGroupFields(): any {
     const groups: { [key: string]: FormArray } = {};
-
     Object.keys(this.groupedFields).forEach((groupKey: any) => {
       const fieldGroup = this.groupedFields[groupKey];
-
-      // Build a form group for one item
       const createGroup = (): FormGroup => {
         const fg: { [key: string]: FormControl } = {};
         fieldGroup.forEach((field) => {
-          fg[field.fieldName] = this.fb.control('');
+          const validators = field.mandatory ? [Validators.required] : [];
+          fg[field.fieldName] = this.fb.control(null, validators);
         });
         return this.fb.group(fg);
       };
 
-      // Initialize the group with one formGroup
       groups[groupKey] = this.fb.array([createGroup()]);
     });
 
@@ -81,19 +79,41 @@ export class DynamicFormComponent {
   }
 
   handleFlatFields() {
-    const group: { [key: string]: any } = {};
+    const flatField: { [key: string]: any } = {};
+
     this.flatFields.forEach((field) => {
-      const isMulti = field.isMulti === true;
-      if (isMulti) {
-        group[field.fieldName] = this.fb.array([this.fb.control('')]);
+      const validators = field.mandatory ? [Validators.required] : [];
+
+      if (field.isMulti) {
+        flatField[field.fieldName] = this.fb.array([
+          this.fb.control(null, validators),
+        ]);
       } else {
-        group[field.fieldName] = this.fb.control('');
+        flatField[field.fieldName] = this.fb.control(null, validators);
       }
     });
-    return group;
+
+    return flatField;
+  }
+
+  markFormTouched(formGroup: FormGroup | FormArray) {
+    Object.values(formGroup.controls).forEach((control) => {
+      if (control instanceof FormControl) {
+        control.markAsTouched();
+      } else if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markFormTouched(control);
+      }
+    });
   }
 
   onSubmit() {
-    console.log('Form Output:', this.form.value);
+    console.log(this.form);
+
+    if (this.form.invalid) {
+      this.markFormTouched(this.form);
+      return;
+    } else {
+      console.log(this.form.value);
+    }
   }
 }

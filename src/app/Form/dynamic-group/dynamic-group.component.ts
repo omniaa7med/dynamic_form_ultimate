@@ -8,15 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
-
-interface Field {
-  fieldName: string;
-  type: string;
-  isMulti?: boolean;
-  mandatory?: boolean;
-  noChange?: boolean;
-  Group: string;
-}
+import { Field } from '../../interfaces/fieldType';
 
 @Component({
   selector: 'app-dynamic-group',
@@ -35,15 +27,10 @@ export class DynamicGroupComponent {
     return this.parentForm.get(this.groupName) as FormArray;
   }
 
-  get innerFields(): Field[] {
-    return this.fields;
-  }
-
   // Get nested groups, which group fields based on their 'Group' property
-  get nestedGroups(): Record<string, Field[]>[] {
+  get nestedGroups() {
     const nested: Record<string, Field[]>[] = [];
 
-    // Make sure groupArray.controls is an array and contains elements
     if (
       Array.isArray(this.groupArray.controls) &&
       this.groupArray.controls.length > 0
@@ -58,7 +45,7 @@ export class DynamicGroupComponent {
   }
 
   // Add a new group
-  addGroup() {
+  createGroup() {
     const newGroup = new FormGroup({});
 
     this.fields.forEach((field: Field) => {
@@ -69,28 +56,10 @@ export class DynamicGroupComponent {
       newGroup.addControl(field.fieldName, control);
     });
 
-    const nestedGroups: Record<string, Field[]> = {};
-
-    // Create FormGroup for each subgroup (nested fields)
-    for (const [subGroupName, fields] of Object.entries(nestedGroups)) {
-      const subGroup = new FormGroup({});
-      fields.forEach((field) => {
-        const control = new FormControl(
-          field.type === 'string' ? '' : null,
-          field.mandatory ? Validators.required : []
-        );
-        subGroup.addControl(field.fieldName, control);
-      });
-
-      // Add the subGroup to the parent FormGroup
-      newGroup.addControl(subGroupName, subGroup);
-    }
-
-    // Add the new group to the FormArray
     (this.parentForm.get(this.groupName) as FormArray).push(newGroup);
   }
 
-  // Remove a group from the FormArray
+  // Remove a group from FormArray
   removeGroup(index: number) {
     this.groupArray.removeAt(index);
   }
