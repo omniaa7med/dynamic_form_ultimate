@@ -12,7 +12,7 @@ import {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './dynamic-field.component.html',
-  styleUrl: './dynamic-field.component.scss',
+  styles: '',
 })
 export class DynamicFieldComponent {
   @Input() field!: any;

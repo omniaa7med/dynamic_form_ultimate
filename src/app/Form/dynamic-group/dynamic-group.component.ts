@@ -15,7 +15,7 @@ import { Field } from '../../interfaces/fieldType';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, DynamicFieldComponent],
   templateUrl: './dynamic-group.component.html',
-  styleUrls: ['./dynamic-group.component.scss'],
+  styles: '',
 })
 export class DynamicGroupComponent {
   @Input() groupName!: string;

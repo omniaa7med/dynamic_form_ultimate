@@ -21,7 +21,7 @@ import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component'
     DynamicFieldComponent,
   ],
   templateUrl: './dynamic-form.component.html',
-  styleUrl: './dynamic-form.component.scss',
+  styles: '',
 })
 export class DynamicFormComponent {
   form!: FormGroup;
@@ -34,8 +34,7 @@ export class DynamicFormComponent {
   ngOnInit() {
     this.http.get<any>('assets/data/tabletest2.json').subscribe((data) => {
       this.testData = data;
-      console.log(this.testData);
-
+      // console.log(this.testData);
       this.buildDynamicForm(this.testData.fieldName);
       this.form = this.fb.group({
         ID: [null],
@@ -107,13 +106,8 @@ export class DynamicFormComponent {
   }
 
   onSubmit() {
-    console.log(this.form);
-
-    if (this.form.invalid) {
-      this.markFormTouched(this.form);
-      return;
-    } else {
-      console.log(this.form.value);
-    }
+    this.form.invalid
+      ? this.markFormTouched(this.form)
+      : console.log(this.form.value);
   }
 }

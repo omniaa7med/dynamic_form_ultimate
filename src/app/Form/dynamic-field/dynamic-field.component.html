@@ -1,4 +1,4 @@
-<div class="" *ngIf="form" [formGroup]="form">
+<div *ngIf="form" [formGroup]="form">
   <ng-container *ngIf="isMulti; else singleInput">
     <div class="mb-5" [formArrayName]="field.fieldName">
       <label class="me-2">{{ field.fieldName }}</label>
