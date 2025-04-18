@@ -1,0 +1,36 @@
+{
+  "ID": "testtable2",
+  "table_name": "testtable2",
+  "fieldName": [
+    {
+      "fieldName": "studentNo",
+      "type": "string",
+      "Group": "student",
+      "mandatory": true
+    },
+    {
+      "fieldName": "studentName",
+      "type": "",
+      "mandatory": true,
+      "Group": "student"
+    },
+    {
+      "fieldName": "contactNumber",
+      "type": "int",
+      "mandatory": true,
+      "Group": "student$contactDetail"
+    },
+    {
+      "fieldName": "rleation",
+      "type": "string",
+      "mandatory": true,
+      "Group": "student$contactDetail"
+    },
+    {
+      "fieldName": "inputter",
+      "type": "string",
+      "mandatory": true,
+      "Group": ""
+    }
+  ]
+}

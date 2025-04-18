@@ -1,0 +1,18 @@
+<div *ngIf="form" class="card m-5">
+  <form class="card-body" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label class="me-2">ID</label>
+    <input formControlName="ID" class="block mb-2" />
+
+    <ng-container *ngFor="let group of groupedFields | keyvalue">
+      <app-dynamic-group [groupName]="group.key" [fields]="group.value" [parentForm]="form" />
+    </ng-container>
+
+    <ng-container *ngFor="let field of flatFields">
+      <app-dynamic-field [field]="field" [form]="form" />
+    </ng-container>
+
+    <!-- <label>Inputter</label>
+    <input formControlName="inputter" class="block mb-2" /> -->
+    <button class="btn btn-primary btn-sm d-flex" type="submit">Submit</button>
+  </form>
+</div>

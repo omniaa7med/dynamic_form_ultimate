@@ -1,0 +1,25 @@
+<div class=" mb-3" [formGroup]="parentForm">
+  <h4>{{ groupName }}</h4>
+
+  <!-- Ensure the FormArray is inside the FormGroup -->
+  <div [formArrayName]="groupName">
+    <div *ngFor="let group of groupArray.controls; let i = index" class="mb-2">
+
+      <!-- Render flat fields -->
+      <app-dynamic-field *ngFor="let field of innerFields" [field]="field" [form]="group">
+      </app-dynamic-field>
+
+      <!-- Render nested groups -->
+      <ng-container *ngIf="nestedGroups[i]">
+        <app-dynamic-group *ngFor="let nested of nestedGroups[i] | keyvalue" [groupName]="nested.key"
+          [fields]="nested.value" [parentForm]="group">
+        </app-dynamic-group>
+
+        <button class="btn btn-danger btn-sm mb-3" type="button" (click)="removeGroup(i)">Remove {{ groupName
+          }}</button>
+      </ng-container>
+    </div>
+  </div>
+
+  <button class="btn btn-primary btn-sm" type="button" (click)="addGroup()">Add {{ groupName }}</button>
+</div>

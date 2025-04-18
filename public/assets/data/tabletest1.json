@@ -1,0 +1,45 @@
+{
+  "ID": "tabletest1",
+  "table_name": "tabletest1",
+  "fieldName": [
+    {
+      "fieldName": "street",
+      "type": "string",
+      "mandatory": true,
+      "Group": "addressDetail"
+    },
+    {
+      "fieldName": "zipCode",
+      "type": "int",
+      "isMulti": false,
+      "mandatory": true,
+      "noChange": false,
+      "Group": "addressDetail"
+    },
+    {
+      "fieldName": "buildingNo",
+      "type": "int",
+      "isMulti": "",
+      "mandatory": true,
+      "noChange": "",
+      "Group": "addressDetail"
+    },
+    {
+      "fieldName": "StudentName",
+      "type": "string",
+      "isMulti": "",
+      "mandatory": "",
+      "noChange": "",
+      "Group": ""
+    },
+    {
+      "fieldName": "phoneNumbers",
+      "type": "string",
+      "isMulti": true,
+      "mandatory": "",
+      "noChange": "",
+      "Group": ""
+    }
+  ],
+  "record_count": 1
+}
